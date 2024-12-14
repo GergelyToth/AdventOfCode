@@ -53,7 +53,6 @@ const correctMaps = map.filter(x => checkNumberCombinations({ ...x, operations }
 console.log(correctMaps.reduce((sum, current) => sum += current.result, 0));
 
 // Part 2
-const operationsPart2 = [...operations, (a, b) => parseInt(`${a}${b}`, 10)];
+const operationsPart2 = [...operations, (a: number, b: number) => parseInt(`${a}${b}`, 10)];
 const correctMaps2 = map.filter(x => checkNumberCombinations({...x, operations: operationsPart2}))
 console.log(correctMaps2.reduce((sum, current) => sum += BigInt(current.result), BigInt(0)));
-

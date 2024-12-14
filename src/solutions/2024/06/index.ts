@@ -125,4 +125,3 @@ let runCounter = 0;
 });
 
 console.log('part 2 answer:', loopingCounter);
-

@@ -31,7 +31,7 @@ const rules = [
 const rules2 = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
 const correct = ['MSMS', 'SMSM', 'MMSS', 'SSMM'];
 
-function getLetterFromMatrixPerPair(pairs, matrix, x, y) {
+function getLetterFromMatrixPerPair(pairs: number[], matrix: string[][], x: number, y: number) {
   const [a, b] = pairs.values();
   if (matrix[x+a] && matrix[x+a][y+b]) {
     return matrix[x+a][y+b];

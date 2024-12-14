@@ -36,7 +36,7 @@ const inputParts = input.split("\n\n");
 const orderBook = inputParts[0].split("\n").map(x => x.split('|').map(y => parseInt(y)));
 const pages = inputParts[1].split("\n").map(x => x.split(',').map(y => parseInt(y)));
 
-function isCorrectOrder(index, page, orderBook) {
+function isCorrectOrder(index: number, page: number[], orderBook: number[][]) {
   let isCorrect = true;
   const number = page[index];
 
@@ -56,7 +56,7 @@ function isCorrectOrder(index, page, orderBook) {
   return isCorrect;
 }
 
-function getMiddleNumberFromPage(page) {
+function getMiddleNumberFromPage(page: any[]): number {
   return page[Math.floor(page.length / 2)]
 }
 

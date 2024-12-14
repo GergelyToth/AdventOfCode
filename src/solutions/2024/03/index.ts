@@ -17,9 +17,11 @@ const replacementReg = RegExp(/don't\(\).*?(do\(\)|$)/, 'gm');
 const newInput = input.split("\n").join('').replaceAll(replacementReg, '');
 let sumPart2 = 0;
 const matchesPart2 = newInput.matchAll(/mul\((\d{1,3}),(\d{1,3})\)/gm)
+
 for (const match of matchesPart2) {
   const x = parseInt(match[1]);
   const y = parseInt(match[2]);
   sumPart2 += (x * y);
 }
+
 console.log(sumPart2);
