@@ -15,7 +15,32 @@ const simple = `...0...
 8.....8
 9.....9`;
 
-const map = simple.split("\n").map(x => x.split(''));
+const simple2 = `..90..9
+...1.98
+...2..7
+6543456
+765.987
+876....
+987....`;
+
+const largeExample = `89010123
+78121874
+87430965
+96549874
+45678903
+32019012
+01329801
+10456732`;
+
+const part2Example = `..90..9
+...1.98
+...2..7
+6543456
+765.987
+876....
+987....`;
+
+const map = input.split("\n").map(x => x.split(''));
 
 // find the starting location with 0
 const startingLocations = map.flatMap((row, rowIndex) => {
@@ -36,10 +61,14 @@ const NEXT_DELTA = [
 	{ x: 0, y: 1 },
 ];
 
-let counter = 0;
-const findNextNumber = (x: number, y: number, currentNumber: number, finished = 0) => {
+const trailsByHash: any = {};
+
+const findNextNumber = (x: number, y: number, currentNumber: number, startCords: string) => {
 	if (currentNumber === 9) {
-		return {finished: true, times: finished + 1};
+		if (!trailsByHash[startCords]) {
+			trailsByHash[startCords] = [];
+		}
+		trailsByHash[startCords].push(`${x}x${y}`);
 	}
 	const nextNumber = currentNumber + 1;
 
@@ -56,22 +85,16 @@ const findNextNumber = (x: number, y: number, currentNumber: number, finished = 
 
 	if (nextNumbers.length > 0) {
 		nextNumbers.forEach(nextCord => {
-			const execution = findNextNumber(nextCord.x, nextCord.y, nextNumber, finished);
-			if (execution.finished) {
-				finished = execution.times;
-				counter++;
-			}
+			findNextNumber(nextCord.x, nextCord.y, nextNumber, startCords);
 		});
 	}
-
-	return {finished: false, times: finished};
 }
 
-console.log(startingLocations);
 startingLocations.forEach(start => {
 	if (start) {
-		console.log('moo', findNextNumber(start.x, start.y, 0))
-		console.log(counter);
+		findNextNumber(start.x, start.y, 0, `${start.x}x${start.y}`);
 	}
 });
 
+const sumTrailheads = (trails: any) => Object.values(trails).reduce((total, current) => total += current.length, 0);
+console.log(sumTrailheads(trailsByHash));
