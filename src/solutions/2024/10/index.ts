@@ -22,15 +22,12 @@ const startingLocations = map.flatMap((row, rowIndex) => {
 	return row.map((column, columnIndex) => {
 		if (column === '0') {
 			return ({
-				x: rowIndex,
-				y: columnIndex,
+				x: columnIndex,
+				y: rowIndex,
 			});
 		}
 	}).filter(x => x);
 }).filter(x => x);
-
-console.log(startingLocations);
-
 
 const NEXT_DELTA = [
 	{ x: -1, y: 0 },
@@ -38,24 +35,43 @@ const NEXT_DELTA = [
 	{ x: 0, y: -1 },
 	{ x: 0, y: 1 },
 ];
-	
-const findNextNumber = (x: number, y: number, currentNumber: number) => {
-	console.log('asdf2');
+
+let counter = 0;
+const findNextNumber = (x: number, y: number, currentNumber: number, finished = 0) => {
 	if (currentNumber === 9) {
-		return true;
+		return {finished: true, times: finished + 1};
 	}
-	currentNumber++;
+	const nextNumber = currentNumber + 1;
 
 	// we need to find the next number 
-	console.log('asdf');
+	const nextNumbers: any[] = [];
 	NEXT_DELTA.forEach(t => {
-		console.log(map[y + t.y][x + t.x]);
+		if (map[y + t.y]) {
+			const numberAtDelta = map[y + t.y][x + t.x];
+			if (parseInt(numberAtDelta, 10) === currentNumber + 1) {
+				nextNumbers.push({x: x + t.x, y: y + t.y});
+			}
+		}
 	});
+
+	if (nextNumbers.length > 0) {
+		nextNumbers.forEach(nextCord => {
+			const execution = findNextNumber(nextCord.x, nextCord.y, nextNumber, finished);
+			if (execution.finished) {
+				finished = execution.times;
+				counter++;
+			}
+		});
+	}
+
+	return {finished: false, times: finished};
 }
 
+console.log(startingLocations);
 startingLocations.forEach(start => {
-	if (start && start.x && start.y) {
-		findNextNumber(start.x, start.y, 0)
+	if (start) {
+		console.log('moo', findNextNumber(start.x, start.y, 0))
+		console.log(counter);
 	}
 });
 
