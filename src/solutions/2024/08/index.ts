@@ -81,3 +81,40 @@ const uniqueAntinodes = [...new Set(filteredAntinodes.map(x => hashCords(x)))];
 console.log('total antinodes', antinodes.length);
 console.log('valid antinodes', antinodes.filter(filterFn).length);
 console.log('unique antinodes', uniqueAntinodes.length);
+
+// part 2
+const inlineAntinodes: Cordinate[] = [];
+uniquePairs.forEach(pair => {
+	const point1 = {x: pair[0].x, y: pair[0].y}
+	const point2 = {x: pair[1].x, y: pair[1].y}
+	const delta = findDifferentialCords(point1, point2);
+	
+	inlineAntinodes.push(point1, point2);
+
+	let newPoint1 = {
+		x: point1.x + delta.x,
+		y: point1.y + delta.y,
+	}
+	while (filterFn(newPoint1)) {
+		inlineAntinodes.push(newPoint1);
+		newPoint1 = {
+			x: newPoint1.x + delta.x,
+			y: newPoint1.y + delta.y,
+		}
+	}
+
+	let newPoint2 = {
+		x: point2.x - delta.x,
+		y: point2.y - delta.y,
+	}
+	while (filterFn(newPoint2)) {
+		inlineAntinodes.push(newPoint2);
+		newPoint2 = {
+			x: newPoint2.x - delta.x,
+			y: newPoint2.y - delta.y,
+		}
+	}
+});
+
+console.log('part 2', new Set(inlineAntinodes.map(x => hashCords(x))).size);
+
